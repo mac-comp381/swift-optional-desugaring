@@ -93,18 +93,18 @@ class OptionalDesugaringTests: XCTestCase {
                     }
                     var explanation = "\n\n\(testFailureIcon) Wrong value `\(describe(result))` returned by \"\(stepName)\" when:"
 
-                    func describeNilness<T>(of color: T?, nameInExercise: String) {
-                        explanation += "\n    \(listBullet) \(nameInExercise) = \(describe(color))"
+                    func describeNilness<T>(of color: T?, usingName name: String) {
+                        explanation += "\n    \(listBullet) \(name) = \(describe(color))"
                     }
-                    describeNilness(of: (avatar == nil ? nil : "not nil"), nameInExercise: "user.avatar")
+                    describeNilness(of: (avatar == nil ? nil : "not nil"), usingName: "user.avatar")
                     if user.avatar != nil {
                         describeNilness(
                             of: avatarStyle?.backgroundColor,
-                            nameInExercise: "user.avatar.style.backgroundColor")
+                            usingName: "user.avatar.style.backgroundColor")
                     }
                     describeNilness(
                         of: appTheme.backgroundColor,
-                        nameInExercise: "appTheme.backgroundColor")
+                        usingName: "appTheme.backgroundColor")
                     return explanation + "\n"
                 }())
             } catch let unimplementedError as ExerciseStepUnimplemented {
@@ -115,7 +115,7 @@ class OptionalDesugaringTests: XCTestCase {
         }
     }
 
-    func testZZZ_allDesugaringsAreImplemented() {  // test run in lexical order, so name makes this test run last
+    func testZZZ_allDesugaringsAreImplemented() {  // tests run in lexical order, so name makes this test run last
         if Self.desugarings.isEmpty {
             XCTFail("At least one of the desugaring tests needs to run before this test runs")
         }
