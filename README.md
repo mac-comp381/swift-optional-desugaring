@@ -2,8 +2,11 @@
 
 ### Setup
 
+Make sure you have installed Swift according to the instructions from you earlier assignment.
+
+Open a terminal / console **in this project’s directory**, and run the tests:
+
 ```bash
-cd optional-desugaring
 swift test
 ```
 
@@ -11,38 +14,39 @@ You should see 6 tests run, with one failing:
 
 ```
 ...
-OptionalDesugaringTests.swift:61: error: -[OptionalDesugaringTests.OptionalDesugaringTests testAllDesugaringsImplemented] : XCTAssertEqual failed: ("1") is not equal to ("7") - Not all desugarings are implemented yet
+<lots of output>
 ...
-...other stuff...
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Steps implemented:
+
+✅ Step 0: Original code
+❌ Step 1: Remove ?? (nil coalescing)                 (in OptionalDesugaring/DesugaringExercise.swift, line 50)
+❌ Step 2: Remove ?. (optional chaining)              (in OptionalDesugaring/DesugaringExercise.swift, line 88)
+❌ Step 3: Translate `if let` to `case`               (in OptionalDesugaring/DesugaringExercise.swift, line 118)
+❌ Step 4: Translate optional type names to full form (in OptionalDesugaring/DesugaringExercise.swift, line 131)
+❌ Step 5: Make implicit optional wrapping explicit   (in OptionalDesugaring/DesugaringExercise.swift, line 160)
+❌ Step 6: Verify desugaring using FakeOptional       (in OptionalDesugaring/DesugaringExercise.swift, line 184)
+
+NOTE: The list above only indicates whether a step is implemented,
+      not whether it is full desugared or working correctly.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ...
-Test Suite 'OptionalDesugaringTests' failed at 2018-04-24 00:57:59.712.
-     Executed 6 tests, with 1 failure (0 unexpected) in 0.234 (0.234) seconds
+<lots more output>
+...
+Test Suite 'All tests' failed at 2021-11-24 16:49:29.414.
+	 Executed 6 tests, with 1 failure (0 unexpected) in 0.212 (0.214) seconds
 ```
 
 The one failure indicates that you have not yet completed all the desugaring tasks.
 
-If you are on a Mac and you want to use Xcode, run:
-
-```bash
-swift package generate-xcodeproj
-open OptionalDesugaring.xcodeproj
-```
-
-You can run the tests in Xcode with cmd-U.
+If you are on a Mac, you can also open the project directory in Xcode and run the tests with cmd-U.
 
 ### Your task
 
 Briefly study the model in `Sources/Model.swift`. This example shows an app in which users may have a custom avatars and theme colors for their profile.
 
-Take a look in `Sources/OptionalDesugaring/ProfileScreen.swift`. This file has a `headerBackgroundColor` computed property which returns the user’s custom background color if present, and the app’s default otherwise. The model is contrived so that several different things are optional, but the implementation correctly handles all of them using Swift’s syntactic sugar.
+Take a look in `Sources/OptionalDesugaring/DesugaringExercise.swift`. This file starts with a snippet of code that returns the user’s custom background color if present, and the app’s default otherwise. The model is contrived so that several different things here are optional, but the implementation correctly handles all of them using Swift’s syntactic sugar.
 
-Underneath it, you will see a `headerBackgroundColorDesugarings` property that returns an array of results, all but the first commented out. For each commented-out entry in the array:
+Follow the instructions in the file to successively remove Swift’s syntactic sugar for optionals.
 
-- Uncomment it.
-- Run `swift test` and make sure the tests fail. (You should see a message like `Exited with signal code 4`, caused by the `fatalError` that now runs because of the line you uncommented.)
-- Find the corresponding `headerBackgroundColor_desugaring_xxxx` implementation below.
-- Copy the body of the previous implementation of `headerBackgroundColor` forward into it, replacing the `fatalError` line.
-- Follow the instructions in the comment to update the new implementation.
-- Run `swift test` again, making sure that your newly desugared implementation passes.
-
-When you are done, you should see all tests passing.
+When you are done, double check that all the tests passing, then commit and push.

@@ -46,8 +46,10 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //     }
             //
             // Copy the previous implementation here, and remove the nil coalescing.
+            //
+            // (Make sure that you COPY the previous step forward to each next step!)
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line and implement this step
+            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
 
             // Remember to run the tests when you have completed each step!
         },
@@ -69,8 +71,8 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //         x = nil
             //     }
             //
-            // Note that the ?. operator does not just affect its own node in the AST; it short-circuits an
-            // entire _chain_ of property accesses. In other words, this:
+            // Note that the ?. operator does not just affect its own node in the AST; it
+            // short-circuits an entire _chain_ of property accesses. In other words, this:
             //
             //    let x = a?.b.c.d.e.f.g
             //
@@ -85,7 +87,7 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // Copy the previous method here, and remove all the optional chaining.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line and implement this step
+            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
 
             // (You may find that this step is tricky to unpuzzle. The solution is not so terrible,
             // but it’s easy to get tangled up looking for it! Ask for a hint if you find yourself
@@ -115,7 +117,7 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // Copy the previous implementation here, and remove all the optional binding.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line and implement this step
+            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
 
             // (You’re remembering to rerun the tests after each step, right?)
         },
@@ -128,7 +130,7 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // say .none instead of Optional.none if Swift can already infer that it’s an Optional
             // from context, but for this exercise, we’re spelling everything out in full!)
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line and implement this step
+            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
         },
 
         "Step 5: Make implicit optional wrapping explicit": {
@@ -157,7 +159,7 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // Copy the previous implementation here and remove Swift’s automatic Optional wrapping.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line and implement this step
+            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
         },
 
         "Step 6: Verify desugaring using FakeOptional": {
@@ -167,7 +169,8 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // Because it is a different type, Swift will not let you use **any** Optional sugar
             // with FakeOptional. You can use this to verify your desugaring: replace Optional →
-            // FakeOptional in your implementation.
+            // FakeOptional in your implementation, then convert back to a real Optional only at
+            // the very end.
             //
             // Here's how:
             //
@@ -181,7 +184,7 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // After doing this, your code should still compile and all the tests should still pass.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line and implement this step
+            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
 
             // Run the tests one more time, and make sure it says:
             //
