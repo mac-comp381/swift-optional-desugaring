@@ -139,7 +139,7 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // This bit of sugar is hard to spot, but it is still sugar, and it is specific to
             // optionals. With any other enum, you would need to explicitly wrap the result, but for
-            // Optional, Swift will magically add Optiona.some(...) for you if necessary.
+            // Optional, Swift will magically add Optional.some(...) for you if necessary.
             //
             // In other words, this:
             //
