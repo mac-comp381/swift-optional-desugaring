@@ -48,6 +48,12 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // Copy the previous implementation here, and remove the nil coalescing.
             //
             // (Make sure that you COPY the previous step forward to each next step!)
+            //
+            // ⚠️⚠️⚠️
+            // Implement this step so that you **only access each property once**, and do not repeat
+            // subexpressions. (For example, your solution should say `appTheme.backgroundColor`
+            // once.) You can achieve this by creating multiple intermediate variables, just like
+            // `x` in the example above.
 
             throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
 
