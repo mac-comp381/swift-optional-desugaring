@@ -198,7 +198,7 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // correct, but do *not* check whether you removed all the sugar correctly. That you
             // have to check carefully with your own eyes.
 
-        }().realOptional },  // 🚨 DO NOT MODIFY THIS LINE! It turns your FakeOptional back to a real one.
+        }().realOptional },  // 🚨 DO NOT MODIFY THIS LINE! It turns your FakeOptional result back into a real one.
     ]
 }
 
