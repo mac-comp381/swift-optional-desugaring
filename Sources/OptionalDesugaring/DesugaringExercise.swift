@@ -168,7 +168,7 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
         },
 
-        "Step 6: Verify desugaring using FakeOptional": {
+        "Step 6: Verify desugaring using FakeOptional": { { () -> FakeOptional<Color> in  // 🚨 DO NOT MODIFY THIS LINE! It ensures that you are returning a FakeOptional.
             // Finally, a correctness check. This project declares an enum type named FakeOptional
             // which has exactly the same structure as Swift’s Optional, but is a separate,
             // unrelated type.
@@ -185,8 +185,6 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //   FakeOptional instead:
             //     - Replace .avatar → .avatar.fakeOptional
             //     - Replace .backgroundColor → .backgroundColor.fakeOptional
-            // - Append .realOptional to your final return statement to convert back to the real
-            //   type, so that the tests know what to do with it.
             //
             // After doing this, your code should still compile and all the tests should still pass.
 
@@ -199,7 +197,8 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // ...at the end of the output. Note that the tests only check whether your logic is
             // correct, but do *not* check whether you removed all the sugar correctly. That you
             // have to check carefully with your own eyes.
-        },
+
+        }().realOptional },  // 🚨 DO NOT MODIFY THIS LINE! It turns your FakeOptional back to a real one.
     ]
 }
 
