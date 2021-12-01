@@ -168,7 +168,7 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
         },
 
-        "Step 6: Verify desugaring using FakeOptional": { { () -> FakeOptional<Color> in  // 🚨 DO NOT MODIFY THIS LINE! It ensures that you are returning a FakeOptional.
+        "Step 6: Verify desugaring using FakeOptional": { try { () -> FakeOptional<Color> in  // 🚨 DO NOT MODIFY THIS LINE! It ensures that you are returning a FakeOptional.
             // Finally, a correctness check. This project declares an enum type named FakeOptional
             // which has exactly the same structure as Swift’s Optional, but is a separate,
             // unrelated type.
