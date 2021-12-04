@@ -92,12 +92,26 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //     }
             //
             // Copy the previous method here, and remove all the optional chaining.
+            //
+            // When you have combined step 1 and step 2, you should end up with something like this:
+            //
+            //     let firstVariable: SomeType
+            //     <code that sets firstVariable to be the result of just the LHS of ??>
+            //     –––––––––––––––––––––––
+            //     let secondVariable: SomeType
+            //     <code that sets secondVariable to be the result of the whole ?? expression,
+            //      using firstVariable where appropriate>
+            //     –––––––––––––––––––––––
+            //     return secondVariable
 
             throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
 
             // (You may find that this step is tricky to unpuzzle. The solution is not so terrible,
-            // but it’s easy to get tangled up looking for it! Ask for a hint if you find yourself
-            // going down the rabbit hole.)
+            // but it’s easy to get tangled up looking for it! For the problems students most
+            // commonly encounter on this step, the solution is to take a step back, reread the
+            // directions, and **apply the substitutions in the directions more literally**.)
+            // 
+            // (Ask for a hint if you find yourself going down the rabbit hole.)
         },
 
         "Step 3: Translate `if let` to `case`": {
