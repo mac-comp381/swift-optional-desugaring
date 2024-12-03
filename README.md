@@ -1,8 +1,8 @@
-# Swift optional desugaring
+# Swift Optional Desugaring
 
-### Setup
+## Setup
 
-Make sure you have installed Swift according to the instructions from you earlier assignment.
+[Install Swift](https://www.swift.org/install/). Post in the class channel if you encounter problems! If you do, there’s a good chance you’re not the only one.
 
 Open a terminal / console **in this project’s directory**, and run the tests:
 
@@ -41,7 +41,7 @@ The one failure indicates that you have not yet completed all the desugaring tas
 
 If you are on a Mac, you can also open the project directory in Xcode and run the tests with cmd-U.
 
-### Your task
+## Your task
 
 Briefly study the model in `Sources/Model.swift`. This example shows an app in which users may have a custom avatars and theme colors for their profile.
 
