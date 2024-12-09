@@ -1,6 +1,6 @@
 import Foundation
 
-func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> Color?] {
+func desugaringExercise(user: User, appTheme: Style) -> [String: () throws -> Color?] {
     [
         "Step 0: Original code": {
             // This is a snippet of hypothetical code from a hypothetical app that computes the
@@ -55,8 +55,11 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // once.) You can achieve this by creating multiple intermediate variables, just like
             // `x` in the example above.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
-
+            return if let colorUnwrapped = user.avatar?.style.backgroundColor {
+                colorUnwrapped
+            } else {
+                appTheme.backgroundColor
+            }
             // Remember to run the tests when you have completed each step!
         },
 
@@ -104,13 +107,25 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //     –––––––––––––––––––––––
             //     return secondVariable
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            let userColor: Color?
+            if let avatar = user.avatar {
+                userColor = avatar.style.backgroundColor
+            } else {
+                userColor = nil
+            }
 
+            let displayColor: Color?
+            if let unwrappedColor = userColor {
+                displayColor = unwrappedColor
+            } else {
+                displayColor = appTheme.backgroundColor
+            }
+            return displayColor
             // (You may find that this step is tricky to unpuzzle. The solution is not so terrible,
             // but it’s easy to get tangled up looking for it! For the problems students most
             // commonly encounter on this step, the solution is to take a step back, reread the
             // directions, and **apply the substitutions in the directions more literally**.)
-            // 
+            //
             // (Ask for a hint if you find yourself going down the rabbit hole.)
         },
 
@@ -137,7 +152,22 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // Copy the previous implementation here, and remove all the optional binding.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            let userColor: Color?
+            switch user.avatar {
+            case .some(let avatar):
+                userColor = avatar.style.backgroundColor
+            case .none:
+                userColor = nil
+            }
+
+            let displayColor: Color?
+            switch userColor {
+            case .some(let unwrappedColor):
+                displayColor = unwrappedColor
+            case .none:
+                displayColor = appTheme.backgroundColor
+            }
+            return displayColor
 
             // (You’re remembering to rerun the tests after each step, right?)
         },
@@ -150,7 +180,22 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // say .none instead of Optional.none if Swift can already infer that it’s an Optional
             // from context, but for this exercise, we’re spelling everything out in full!)
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            let userColor: Optional<Color>
+            switch user.avatar {
+            case Optional.some(let avatar):
+                userColor = avatar.style.backgroundColor
+            case Optional.none:
+                userColor = Optional.none
+            }
+
+            let displayColor: Optional<Color>
+            switch userColor {
+            case Optional.some(let unwrappedColor):
+                displayColor = unwrappedColor
+            case Optional.none:
+                displayColor = appTheme.backgroundColor
+            }
+            return displayColor
         },
 
         "Step 5: Make implicit optional wrapping explicit": {
@@ -179,40 +224,72 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // Copy the previous implementation here and remove Swift’s automatic Optional wrapping.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            let userColor: Optional<Color>
+            switch user.avatar {
+            case Optional.some(let avatar):
+                userColor = avatar.style.backgroundColor
+            case Optional.none:
+                userColor = Optional.none
+            }
+
+            let displayColor: Optional<Color>
+            switch userColor {
+            case Optional.some(let unwrappedColor):
+                displayColor = Optional.some(unwrappedColor)
+            case Optional.none:
+                displayColor = appTheme.backgroundColor
+            }
+            return displayColor
         },
 
-        "Step 6: Verify desugaring using FakeOptional": { try { () -> FakeOptional<Color> in  // 🚨 DO NOT MODIFY THIS LINE! It ensures that you are returning a FakeOptional.
-            // Finally, a correctness check. This project declares an enum type named FakeOptional
-            // which has exactly the same structure as Swift’s Optional, but is a separate,
-            // unrelated type.
-            //
-            // Because it is a different type, Swift will not let you use **any** Optional sugar
-            // with FakeOptional. You can use this to verify your desugaring: replace Optional →
-            // FakeOptional in your implementation, then convert back to a real Optional only at
-            // the very end.
-            //
-            // Here's how:
-            //
-            // - Anywhere you use the type name Optional, replace it with FakeOptional.
-            // - Anywhere you use the two model properties that return Optional, convert them to
-            //   FakeOptional instead:
-            //     - Replace .avatar → .avatar.fakeOptional
-            //     - Replace .backgroundColor → .backgroundColor.fakeOptional
-            //
-            // After doing this, your code should still compile and all the tests should still pass.
+        "Step 6: Verify desugaring using FakeOptional": {
+            try { () -> FakeOptional<Color> in  // 🚨 DO NOT MODIFY THIS LINE! It ensures that you are returning a FakeOptional.
+                // Finally, a correctness check. This project declares an enum type named FakeOptional
+                // which has exactly the same structure as Swift’s Optional, but is a separate,
+                // unrelated type.
+                //
+                // Because it is a different type, Swift will not let you use **any** Optional sugar
+                // with FakeOptional. You can use this to verify your desugaring: replace Optional →
+                // FakeOptional in your implementation, then convert back to a real Optional only at
+                // the very end.
+                //
+                // Here's how:
+                //
+                // - Anywhere you use the type name Optional, replace it with FakeOptional.
+                // - Anywhere you use the two model properties that return Optional, convert them to
+                //   FakeOptional instead:
+                //     - Replace .avatar → .avatar.fakeOptional
+                //     - Replace .backgroundColor → .backgroundColor.fakeOptional
+                //
+                // After doing this, your code should still compile and all the tests should still pass.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+               let userColor: FakeOptional<Color>
+            switch user.avatar.fakeOptional {
+            case FakeOptional.some(let avatar):
+                userColor = avatar.style.backgroundColor.fakeOptional
+            case FakeOptional.none:
+                userColor = FakeOptional.none
+            }
 
-            // Run the tests one more time, and make sure it says:
-            //
-            //     Test Suite 'All tests' passed
-            //
-            // ...at the end of the output. Note that the tests only check whether your logic is
-            // correct, but do *not* check whether you removed all the sugar correctly. That you
-            // have to check carefully with your own eyes.
+            let displayColor: FakeOptional<Color>
+            switch userColor {
+            case FakeOptional.some(let unwrappedColor):
+                displayColor = FakeOptional.some(unwrappedColor)
+            case FakeOptional.none:
+                displayColor = appTheme.backgroundColor.fakeOptional
+            }
+            return displayColor
 
-        }().realOptional },  // 🚨 DO NOT MODIFY THIS LINE! It turns your FakeOptional result back into a real one.
+                // Run the tests one more time, and make sure it says:
+                //
+                //     Test Suite 'All tests' passed
+                //
+                // ...at the end of the output. Note that the tests only check whether your logic is
+                // correct, but do *not* check whether you removed all the sugar correctly. That you
+                // have to check carefully with your own eyes.
+
+            }().realOptional
+        },  // 🚨 DO NOT MODIFY THIS LINE! It turns your FakeOptional result back into a real one.
     ]
 }
 
