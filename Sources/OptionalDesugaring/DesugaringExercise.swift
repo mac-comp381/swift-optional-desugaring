@@ -54,8 +54,15 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // subexpressions. (For example, your solution should say `appTheme.backgroundColor`
             // once.) You can achieve this by creating multiple intermediate variables, just like
             // `x` in the example above.
-
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            var userBgColor: Color?;
+            if let bgColor = user.avatar?.style.backgroundColor{
+                userBgColor = bgColor;
+                return userBgColor;
+            }
+            else{
+                userBgColor = appTheme.backgroundColor; 
+                return userBgColor;
+            }
 
             // Remember to run the tests when you have completed each step!
         },
@@ -103,8 +110,15 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //      using firstVariable where appropriate>
             //     –––––––––––––––––––––––
             //     return secondVariable
-
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            var userBgColor: Color?;
+            if let bgColor = user.avatar{
+                userBgColor = bgColor.style.backgroundColor;
+                return userBgColor;
+            }
+            else{
+                userBgColor = nil; 
+                return userBgColor;
+            }
 
             // (You may find that this step is tricky to unpuzzle. The solution is not so terrible,
             // but it’s easy to get tangled up looking for it! For the problems students most
@@ -136,9 +150,15 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //     }
             //
             // Copy the previous implementation here, and remove all the optional binding.
-
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
-
+            var userBgColor: Color?;
+            switch user.avatar{
+                case .some(let bgColor):
+                    userBgColor = bgColor.style.backgroundColor;
+                    return userBgColor;
+                case .none: 
+                    userBgColor = nil; 
+                    return userBgColor;
+            }
             // (You’re remembering to rerun the tests after each step, right?)
         },
 
