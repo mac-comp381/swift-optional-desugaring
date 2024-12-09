@@ -1,4 +1,4 @@
-import XCTest
+import Testing
 @testable import OptionalDesugaring
 
 #if os(Windows)  // Windows cmd & Powershell are both terrible at handling Unicode
@@ -15,10 +15,7 @@ import XCTest
     let dividerLine = String(repeating: "━", count: 80)
 #endif
 
-class OptionalDesugaringTests: XCTestCase {
-    private static var desugarings: Set<String> = []
-    private static var desugaringsUnimplemented: [String:ExerciseStepUnimplemented] = [:]
-
+struct OptionalDesugaringTests {
     let theme0 = Style(
         backgroundColor: nil,
         foregroundColor: .fulvous)
@@ -31,35 +28,40 @@ class OptionalDesugaringTests: XCTestCase {
         backgroundColor: .mauve,
         foregroundColor: .wenge)
 
-    func testAvatarHasBackgroundColor() {
+    @Test
+    func avatarHasBackgroundColor() {
         assertBackgroundColorDesugarings(
             allEqual: Color.mauve,
             forAvatarStyle: theme2,
             appTheme: theme1)
     }
 
-    func testAvatarHasNoBackgroundColor() {
+    @Test
+    func avatarHasNoBackgroundColor() {
         assertBackgroundColorDesugarings(
             allEqual: Color.fuchsia,
             forAvatarStyle: theme0,
             appTheme: theme1)
     }
 
-    func testAvatarAndAppThemeBothHaveNoBackgroundColor() {
+    @Test
+    func avatarAndAppThemeBothHaveNoBackgroundColor() {
         assertBackgroundColorDesugarings(
             allEqual: nil,
             forAvatarStyle: theme0,
             appTheme: theme0)
     }
 
-    func testNoAvatar() {
+    @Test
+    func noAvatar() {
         assertBackgroundColorDesugarings(
             allEqual: Color.mauve,
             forAvatarStyle: nil,
             appTheme: theme2)
     }
 
-    func testNoStylesAtAll() {
+    @Test
+    func noStylesAtAll() {
         assertBackgroundColorDesugarings(
             allEqual: nil,
             forAvatarStyle: nil,
@@ -80,10 +82,9 @@ class OptionalDesugaringTests: XCTestCase {
         let user = User(name: "Sally Nguyen", avatar: avatar)
 
         for (stepName, sugaringFunc) in desugaringExercise(user: user, appTheme: appTheme) {
-            Self.desugarings.insert(stepName)
             do {
                 let result = try sugaringFunc()
-                XCTAssertEqual(expectedValue, result, {
+                #expect(expectedValue == result, {
                     func describe<T>(_ value: T?) -> String {
                         if let value = value {
                             return String(describing: value)
@@ -105,42 +106,61 @@ class OptionalDesugaringTests: XCTestCase {
                     describeNilness(
                         of: appTheme.backgroundColor,
                         usingName: "appTheme.backgroundColor")
-                    return explanation + "\n"
+                    return Comment(rawValue: explanation + "\n")
                 }())
-            } catch let unimplementedError as ExerciseStepUnimplemented {
-                Self.desugaringsUnimplemented[stepName] = unimplementedError
+            } catch is ExerciseStepUnimplemented {
+                // ignore; allDesugaringsAreImplemented will report
             } catch let error {
-                XCTFail("\(error)")
+                Issue.record("\(error)")
             }
         }
     }
 
-    func testZZZ_allDesugaringsAreImplemented() {  // tests run in lexical order, so name makes this test run last
-        if Self.desugarings.isEmpty {
-            XCTFail("At least one of the desugaring tests needs to run before this test runs")
+    @Test
+    func allDesugaringsAreImplemented() throws {  // tests run in lexical order, so name makes this test run last
+        var desugarings: Set<String> = []
+        var desugaringsUnimplemented: [String:ExerciseStepUnimplemented] = [:]
+
+        let user = User(name: "Sally Nguyen", avatar: nil)
+        for (stepName, sugaringFunc) in desugaringExercise(user: user, appTheme: theme0) {
+            desugarings.insert(stepName)
+            do {
+                _ = try sugaringFunc()
+            } catch let unimplementedError as ExerciseStepUnimplemented {
+                desugaringsUnimplemented[stepName] = unimplementedError
+            }
         }
 
-        print(dividerLine)
-        print("Steps implemented:")
-        print()
-        let maxStepNameWidth = Self.desugarings.lazy.map(\.count).max() ?? 0
-        for stepName in Self.desugarings.sorted() {
-            if let unimplemented = Self.desugaringsUnimplemented[stepName] {
-                print(
+        // Because tests run concurrently, we have to build our multiline report first and then
+        // print it all at once.
+        var report = ""
+        func addToReport(_ items: Any...) {
+            report += items.map { "\($0)" }.joined(separator: " ") + "\n"
+        }
+
+        addToReport(dividerLine)
+        addToReport("Steps implemented:")
+        addToReport()
+        let maxStepNameWidth = desugarings.lazy.map(\.count).max() ?? 0
+        for stepName in desugarings.sorted() {
+            if let unimplemented = desugaringsUnimplemented[stepName] {
+                addToReport(
                     notCompletedIcon,
                     stepName.padded(with: " ", toWidth: maxStepNameWidth),
                     "(in \(unimplemented.file), line \(unimplemented.line))")
             } else {
-                print(completedIcon, stepName)
+                addToReport(completedIcon, stepName)
             }
         }
-        print()
-        print("NOTE: The list above only indicates whether a step is implemented,")
-        print("      not whether it is full desugared or working correctly.")
-        print(dividerLine)
+        addToReport()
+        addToReport("NOTE: The list above only indicates whether a step is implemented,")
+        addToReport("      not whether it is full desugared or working correctly.")
+        addToReport(dividerLine)
 
-        if !Self.desugaringsUnimplemented.isEmpty {
-            XCTFail("Some desugaring steps are not yet implemented")
+        print(report)
+
+        if !desugaringsUnimplemented.isEmpty {
+            Issue.record("Some desugaring steps are not yet implemented")
         }
     }
 }
