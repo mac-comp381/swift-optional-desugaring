@@ -169,8 +169,16 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // use nil at all, but if it does, replace it with Optional.none instead. (You can also
             // say .none instead of Optional.none if Swift can already infer that it’s an Optional
             // from context, but for this exercise, we’re spelling everything out in full!)
-
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            var userBgColor: Optional<Color>;
+            switch user.avatar{
+                case .some(let bgColor):
+                    userBgColor = bgColor.style.backgroundColor;
+                    return userBgColor;
+                case .none: 
+                    userBgColor = Optional.none; 
+                    return userBgColor;
+            }
+           
         },
 
         "Step 5: Make implicit optional wrapping explicit": {
@@ -199,7 +207,20 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // Copy the previous implementation here and remove Swift’s automatic Optional wrapping.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            var userBgColor: Color?;
+            switch user.avatar{
+                case .some(let avatar):
+                    if let bgColor =  avatar.style.backgroundColor{
+                        userBgColor = Optional.some(bgColor)
+                        return userBgColor;
+                    }else {
+                        userBgColor = Optional.none
+                        return userBgColor;
+                    }
+                case .none: 
+                    userBgColor = Optional.none; 
+                    return userBgColor;
+            }
         },
 
         "Step 6: Verify desugaring using FakeOptional": { try { () -> FakeOptional<Color> in  // 🚨 DO NOT MODIFY THIS LINE! It ensures that you are returning a FakeOptional.
@@ -222,7 +243,20 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // After doing this, your code should still compile and all the tests should still pass.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            var userBgColor: FakeOptional<Color>;
+            switch user.avatar.fakeOptional{
+                case .some(let avatar):
+                    if let bgColor =  avatar.style.backgroundColor.fakeOptional{
+                        userBgColor = FakeOptional.some(bgColor)
+                        return userBgColor;
+                    }else {
+                        userBgColor = FakeOptional.none
+                        return userBgColor;
+                    }
+                case .none: 
+                    userBgColor = FakeOptional.none; 
+                    return userBgColor;
+            }
 
             // Run the tests one more time, and make sure it says:
             //
