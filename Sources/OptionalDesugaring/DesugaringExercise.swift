@@ -110,16 +110,6 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //     –––––––––––––––––––––––
             //     return secondVariable
 
-            """
-            let bgColor: Color?
-            if let userBgColor = user.avatar?.style.backgroundColor {
-                bgColor = userBgColor
-            } else {
-                bgColor = appTheme.backgroundColor
-            }
-            return bgColor
-            """
-
             let userAvatarColor: Color?
             if let userImg = user.avatar {
                 userAvatarColor = userImg.style.backgroundColor
@@ -166,7 +156,21 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // Copy the previous implementation here, and remove all the optional binding.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            let userAvatarColor: Color?
+            switch user.avatar {
+                case .some(let userImg):
+                    userAvatarColor = userImg.style.backgroundColor
+                case .none:
+                    userAvatarColor = nil
+            }
+            let bgColor: Color?
+            switch userAvatarColor {
+                case .some(let userBgColor):
+                    bgColor = userBgColor
+                case .none:
+                    bgColor = appTheme.backgroundColor
+            }
+            return bgColor
 
             // (You’re remembering to rerun the tests after each step, right?)
         },
