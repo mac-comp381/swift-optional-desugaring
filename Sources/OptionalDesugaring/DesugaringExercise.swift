@@ -226,7 +226,21 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // Copy the previous implementation here and remove Swift’s automatic Optional wrapping.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            let userAvatarColor: Optional<Color>
+            switch user.avatar {
+                case .some(let userImg):
+                    userAvatarColor = userImg.style.backgroundColor
+                case .none:
+                    userAvatarColor = Optional.none
+            }
+            let bgColor: Optional<Color>
+            switch userAvatarColor {
+                case .some(let userBgColor):
+                    bgColor = Optional.some(userBgColor)
+                case .none:
+                    bgColor = appTheme.backgroundColor
+            }
+            return bgColor
         },
 
         "Step 6: Verify desugaring using FakeOptional": { try { () -> FakeOptional<Color> in  // 🚨 DO NOT MODIFY THIS LINE! It ensures that you are returning a FakeOptional.
