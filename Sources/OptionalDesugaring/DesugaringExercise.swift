@@ -183,7 +183,21 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // say .none instead of Optional.none if Swift can already infer that it’s an Optional
             // from context, but for this exercise, we’re spelling everything out in full!)
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            let userAvatarColor: Optional<Color>
+            switch user.avatar {
+                case .some(let userImg):
+                    userAvatarColor = userImg.style.backgroundColor
+                case .none:
+                    userAvatarColor = Optional.none
+            }
+            let bgColor: Optional<Color>
+            switch userAvatarColor {
+                case .some(let userBgColor):
+                    bgColor = userBgColor
+                case .none:
+                    bgColor = appTheme.backgroundColor
+            }
+            return bgColor
         },
 
         "Step 5: Make implicit optional wrapping explicit": {
