@@ -55,8 +55,14 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // once.) You can achieve this by creating multiple intermediate variables, just like
             // `x` in the example above.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
-
+            let result: Color?
+            if let bgColor = user.avatar?.style.backgroundColor {
+                result = bgColor
+            }
+            else {
+                result = appTheme.backgroundColor
+            }
+            return result
             // Remember to run the tests when you have completed each step!
         },
 
@@ -104,7 +110,21 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //     –––––––––––––––––––––––
             //     return secondVariable
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+
+            let userAvatarStyleBackgroundColor : Color?
+            if let userAvatar = user.avatar {
+                userAvatarStyleBackgroundColor = userAvatar.style.backgroundColor
+            } else {
+                userAvatarStyleBackgroundColor = nil
+            }
+            let result: Color?
+            if let bgColor = userAvatarStyleBackgroundColor {
+                result = bgColor
+            }
+            else {
+                result = appTheme.backgroundColor
+            }
+            return result
 
             // (You may find that this step is tricky to unpuzzle. The solution is not so terrible,
             // but it’s easy to get tangled up looking for it! For the problems students most
@@ -137,8 +157,13 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // Copy the previous implementation here, and remove all the optional binding.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
-
+            // switch a {
+            //     case .some(let b):
+            //         doSomething(b)
+            //     case .none:
+            //         doSomethingElse()
+            // }
+            throw ExerciseStepUnimplemented() 
             // (You’re remembering to rerun the tests after each step, right?)
         },
 
