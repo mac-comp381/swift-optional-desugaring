@@ -54,12 +54,20 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // subexpressions. (For example, your solution should say `appTheme.backgroundColor`
             // once.) You can achieve this by creating multiple intermediate variables, just like
             // `x` in the example above.
+            
+            // Step 1 Implementation
+            let fallback = appTheme.backgroundColor
+            let potentialColor = user.avatar?.style.backgroundColor
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            if let c = potentialColor {
+                return c
+            } else {
+                return fallback
+            }
 
             // Remember to run the tests when you have completed each step!
         },
-
+        
         "Step 2: Remove ?. (optional chaining)": {
             // Swift’s ?. operator, “optional chaining,” makes a property accesses evaluate to nil
             // if the LHS is nil, and otherwise continues following the property chain.
@@ -103,8 +111,24 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //      using firstVariable where appropriate>
             //     –––––––––––––––––––––––
             //     return secondVariable
+            
+            // Step 2 Implementation
+            let fallback = appTheme.backgroundColor
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            let avatarOptional = user.avatar
+            let primary: Color?
+
+            if let avatarUnwrapped = avatarOptional {
+                primary = avatarUnwrapped.style.backgroundColor
+            } else {
+                primary = nil
+            }
+
+            if let c = primary {
+                return c
+            } else {
+                return fallback
+            }
 
             // (You may find that this step is tricky to unpuzzle. The solution is not so terrible,
             // but it’s easy to get tangled up looking for it! For the problems students most
@@ -137,7 +161,24 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // Copy the previous implementation here, and remove all the optional binding.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            // Step 3 Implementation
+            let fallback = appTheme.backgroundColor
+            let avatarOptional = user.avatar
+            let primary: Color?
+
+            switch avatarOptional {
+            case .some(let avatarUnwrapped):
+                primary = avatarUnwrapped.style.backgroundColor
+            case .none:
+                primary = nil
+            }
+
+            switch primary {
+            case .some(let c):
+                return c
+            case .none:
+                return fallback
+            }
 
             // (You’re remembering to rerun the tests after each step, right?)
         },
@@ -150,7 +191,24 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             // say .none instead of Optional.none if Swift can already infer that it’s an Optional
             // from context, but for this exercise, we’re spelling everything out in full!)
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            //Step 4 implementation
+            let fallback: Optional<Color> = appTheme.backgroundColor
+            let avatarOptional: Optional<StyledImage> = user.avatar
+            let primary: Optional<Color>
+
+            switch avatarOptional {
+            case .some(let avatarUnwrapped):
+                primary = avatarUnwrapped.style.backgroundColor
+            case .none:
+                primary = Optional.none
+            }
+
+            switch primary {
+            case .some(let c):
+                return c
+            case .none:
+                return fallback
+            }
         },
 
         "Step 5: Make implicit optional wrapping explicit": {
@@ -178,9 +236,33 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //     let y: T? = x    // No sugar here; x is already optional
             //
             // Copy the previous implementation here and remove Swift’s automatic Optional wrapping.
+            
+            // Step 5 Implementation
+               let fallback: Optional<Color> = appTheme.backgroundColor
+               // `user.avatar` is Optional<StyledImage> already, no wrapping needed.
+               let avatarOptional: Optional<StyledImage> = user.avatar
+               let primary: Optional<Color>
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
-        },
+               switch avatarOptional {
+               case .some(let avatarUnwrapped):
+                   // `avatarUnwrapped.style.backgroundColor` is already Optional<Color>, so no extra wrapping needed.
+                   primary = avatarUnwrapped.style.backgroundColor
+               case .none:
+                   primary = Optional.none
+               }
+
+               switch primary {
+               case .some(let c):
+                   // `c` is a Color, but we need to return a Color?
+                   // Previously, `return c` would implicitly wrap `c` into Optional.some(c).
+                   // Now we must write it explicitly:
+                   return Optional.some(c)
+
+               case .none:
+                   // `fallback` is already Optional<Color>, so no wrapping needed:
+                   return fallback
+               }
+           },
 
         "Step 6: Verify desugaring using FakeOptional": { try { () -> FakeOptional<Color> in  // 🚨 DO NOT MODIFY THIS LINE! It ensures that you are returning a FakeOptional.
             // Finally, a correctness check. This project declares an enum type named FakeOptional
@@ -202,7 +284,23 @@ func desugaringExercise(user: User, appTheme: Style) -> [String : () throws -> C
             //
             // After doing this, your code should still compile and all the tests should still pass.
 
-            throw ExerciseStepUnimplemented()  // TODO: delete this line, copy the previous step here, and implement this step
+            let fallback: FakeOptional<Color> = appTheme.backgroundColor.fakeOptional
+               let avatarOptional: FakeOptional<StyledImage> = user.avatar.fakeOptional
+               let primary: FakeOptional<Color>
+
+               switch avatarOptional {
+               case .some(let avatarUnwrapped):
+                   primary = avatarUnwrapped.style.backgroundColor.fakeOptional
+               case .none:
+                   primary = FakeOptional.none
+               }
+
+               switch primary {
+               case .some(let c):
+                   return FakeOptional.some(c)
+               case .none:
+                   return fallback
+               }
 
             // Run the tests one more time, and make sure it says:
             //
